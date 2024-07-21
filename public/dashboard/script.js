@@ -1,0 +1,1 @@
+console.log("ini dari view js");
