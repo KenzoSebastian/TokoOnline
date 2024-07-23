@@ -1,8 +1,10 @@
 const express = require("express");
+const app = express();
+
+// router
+const routerAuth = require("./Route/auth");
 
 require("dotenv").config();
-
-const app = express();
 const port = process.env.PORT;
 
 app.set("view engine", "ejs");
@@ -15,6 +17,8 @@ app.get("/", (req, res) => {
         layout: "layouts/main"
     });
 });
+
+app.use("/auth", routerAuth);
 
 app.use("/", (req, res) => {
     res.status(404).render("error", {
