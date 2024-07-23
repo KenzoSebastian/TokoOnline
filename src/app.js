@@ -12,10 +12,15 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
     res.render("dashboard", {
         title: "beranda",
-        style: "dashboard/style.css",
-        script: "dashboard/script.js",
         layout: "layouts/main"
     });
+});
+
+app.use("/", (req, res) => {
+    res.status(404).render("error", {
+        title: "404 NOT FOUND",
+        layout: "layouts/main"
+    })
 });
 
 app.listen(port, () => {
