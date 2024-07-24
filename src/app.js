@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 
-const SHA256 = require("crypto-js/sha256");
-
 // router
 const routerAuth = require("./Route/routeAuth");
+
+// generator string
 const stringRandom = require("./generator/stringGenerate");
 
 require("dotenv").config();
@@ -13,7 +13,9 @@ const port = process.env.PORT;
 app.set("view engine", "ejs");
 app.use(require("express-ejs-layouts"));
 app.use(express.static("public"));
-console.log(stringRandom);
+
+//debug
+
 app.get("/", (req, res) => {
     res.render("pages/dashboard", {
         title: "beranda",

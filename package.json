@@ -4,19 +4,23 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app"
+    "start": "nodemon src/app",
+    "tailwind": "npx tailwindcss -i ./public/stylesheet/input.css -o ./public/stylesheet/output.css --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "autoprefixer": "^10.4.19",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-ejs-layouts": "^2.5.1",
     "nodemon": "^3.1.4",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.6",
     "uuid": "^10.0.0"
   }
 }
