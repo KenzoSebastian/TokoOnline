@@ -1,7 +1,55 @@
-<!-- <main class="flex justify-center items-center h-screen">
-    <div class="w-full h-96 bg-sky-800 md:mx-14 mx-5 p-5 rounded-2xl">
-        <h1 class="text-center font-bold text-4xl">Register</h1>
-    </div>
-</main> -->
+<!-- login start -->
+<section class="min-h-screen px-12 py-5 flex items-center">
+    <div class="auth-box">
 
-<img src="img/logo.png" alt="logo">
+        <%- include("../layouts/headerAuth.ejs") %>
+        
+        <div class="w-full md:w-1/2 md:order-first">
+            <form action="" method="post">
+                <div class="border border-primary-5/60 rounded-lg overflow-hidden mb-5">
+                    <div class="flex text-center text-xs overflow-hidden bg-slate-50 sm:text-base md:text-lg"
+                        id="form">
+                        <a href="/auth/register?role=custumer" class="option-input">As Custumer</a>
+                        <a href="/auth/register?role=seller" class="option-input">As Seller</a>
+                    </div>
+                    <div class="relative py-3 px-3 md:py-5">
+                        <input type="text" name="username" class="input-form-auth" placeholder="Username">
+                        <input type="password" name="password" class="input-form-auth" placeholder="Password"
+                            id="password">
+                        <img src="../img/view.png" alt="visible"
+                            class="w-5 absolute bottom-8 right-5 cursor-pointer hover:scale-110 transition sm:bottom-9 md:bottom-11"
+                            id="viewPass">
+                        <a href="#"
+                            class="absolute text-[10px] right-5 bottom-2 hover:text-primary-5 cursor-pointer sm:text-xs md:text-sm">forgot
+                            password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">register</button>
+                <p class="text-center text-xs sm:text-sm md:text-base">have an account? <a href="/auth/login?role=custumer" class="block underline text-primary-5 hover:text-primary-7 md:inline">Sign in</a></p>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- login end -->
+<script>
+    // optionform
+    const [custumer, seller] = Array.from(document.getElementById("form").children);
+    if (window.location.search === "?role=custumer") custumer.classList.add("form-active");
+    if (window.location.search === "?role=seller") seller.classList.add("form-active");
+
+    // visible password
+    const viewPass = document.getElementById("viewPass");
+    viewPass.addEventListener("click", () => {
+        const inputPass = document.getElementById("password");
+        if (viewPass.classList.contains("viewPassword")) {
+            viewPass.src = "../img/view.png";
+            inputPass.type = "password";
+            viewPass.classList.remove("viewPassword");
+        } else {
+            viewPass.src = "../img/unview.png";
+            inputPass.type = "text";
+            viewPass.classList.add("viewPassword");
+        }
+    })
+</script>
