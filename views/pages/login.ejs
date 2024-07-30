@@ -1,5 +1,66 @@
-<main class="flex justify-center items-center h-screen">
-    <div class="w-full h-96 bg-sky-300 md:mx-14 mx-5 p-5 rounded-2xl">
-        <h1 class="text-center font-bold text-4xl">Login</h1>
+<!-- login start -->
+<section class="min-h-screen px-12 py-5 flex items-center">
+    <div
+        class="w-full min-h-[70vh] mx-auto bg-gradient-to-t from-lime-200 to-white shadow-lg rounded-xl border p-5 overflow-hidden flex flex-wrap items-center">
+
+        <div class="w-full md:w-1/2">
+            <div class="w-full mx-auto sm:w-3/5">
+                <img src="../img/logo.png" alt="logo">
+            </div>
+            <h1 class="uppercase text-center my-3 text-sm font-bold sm:text-xl">Sign In</h1>
+            <p
+                class="capitalize text-[11px] font-light text-center max-w-44 block mx-auto mb-4 text-pretty sm:text-base">
+                hi there! we're glad you're back again</p>
+        </div>
+
+        <div class="w-full md:w-1/2">
+            <form action="" method="post">
+                <div class="border border-primary-5/60 rounded-lg overflow-hidden mb-5">
+                    <div class="flex text-center text-xs overflow-hidden bg-slate-50 sm:text-base md:text-lg" id="form">
+                        <a href="/auth/login?role=custumer" class="option-input">As Custumer</a>
+                        <a href="/auth/login?role=seller" class="option-input">As Seller</a>
+                    </div>
+                    <div class="relative py-3 px-3 md:py-5">
+                        <input type="text" name="username" class="input-form-auth" placeholder="Username">
+                        <input type="password" name="password" class="input-form-auth" placeholder="Password"
+                            id="password">
+                        <img src="../img/view.png" alt="visible"
+                            class="w-5 absolute bottom-8 right-5 cursor-pointer hover:scale-110 transition sm:bottom-9 md:bottom-11"
+                            id="viewPass">
+                        <a href="#"
+                            class="absolute text-[10px] right-5 bottom-2 hover:text-primary-5 cursor-pointer sm:text-xs md:text-sm">forgot password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Login</button>
+                <p class="text-center text-xs sm:text-sm md:text-base">Don't have an account? <a href="#"
+                        class="block underline text-primary-5 hover:text-primary-7 md:inline">Sign up</a></p>
+            </form>
+        </div>
+
+
     </div>
-</main>
+</section>
+<!-- login end -->
+<script>
+    // optionform
+    const [custumer, seller] = Array.from(document.getElementById("form").children);
+    if (window.location.search === "?role=custumer") custumer.classList.add("form-active");
+    if (window.location.search === "?role=seller") seller.classList.add("form-active");
+
+
+    // visible password
+    const viewPass = document.getElementById("viewPass");
+    viewPass.addEventListener("click", () => {
+        const inputPass = document.getElementById("password");
+        if (viewPass.classList.contains("viewPassword")) {
+            viewPass.src = "../img/view.png";
+            inputPass.type = "password";
+            viewPass.classList.remove("viewPassword");
+        } else {
+            viewPass.src = "../img/unview.png";
+            inputPass.type = "text";
+            viewPass.classList.add("viewPassword");
+        }
+    })
+</script>
