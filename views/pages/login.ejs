@@ -12,14 +12,12 @@
                         <a href="/auth/login?role=seller" class="option-input">As Seller</a>
                     </div>
                     <div class="relative py-3 px-3 md:py-5">
-                        <input type="text" name="username" class="input-form-auth" placeholder="Username">
-                        <input type="password" name="password" class="input-form-auth" placeholder="Password"
-                            id="password">
-                        <img src="../img/view.png" alt="visible"
-                            class="w-5 absolute bottom-8 right-5 cursor-pointer hover:scale-110 transition sm:bottom-10 md:bottom-12"
-                            id="viewPass">
-                        <a href="#"
-                            class="absolute text-[10px] right-5 bottom-2 hover:text-primary-5 cursor-pointer sm:text-xs md:text-sm">forgot password?</a>
+                        <input type="text" name="username" class="input-form-auth-login" placeholder="Username" required>
+
+                        <input type="password" name="password" class="input-form-auth-login" placeholder="Password" id="password" required>
+                        <img src="../img/view.png" alt="visible" class="w-5 absolute bottom-8 right-5 cursor-pointer hover:scale-110 transition sm:bottom-10 md:bottom-12" id="viewPass">
+                        
+                        <a href="#" class="absolute text-[10px] right-5 bottom-2 hover:text-primary-5 cursor-pointer sm:text-xs md:text-sm">forgot password?</a>
                     </div>
                 </div>
 

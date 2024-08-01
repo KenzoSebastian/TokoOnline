@@ -13,12 +13,27 @@ const register = (req, res) => {
     res.render("pages/register", {
         title: "Sign Up",
         greeting: "hello, Fill out this form to join our amazing community!",
+        role: req.query.role,
+        msg: req.flash("msg"),
         layout: "layouts/main"
     });
+};
+
+const createRegister = (req, res) => {
+    const role = req.query.role;
+    
+    if (req.body.password !== req.body.passwordConfirm) {
+        req.flash("msg", "password confirmation does not match");
+        res.redirect(`/auth/register?role=${role}`);
+    } else {
+        res.send("password sama");
+
+    }
+
 };
 
 const error = (req, res) => {
     res.redirect(`/${stringRandom}`);
 };
 
-module.exports = { login, register, error };
+module.exports = { login, register, error, createRegister };
