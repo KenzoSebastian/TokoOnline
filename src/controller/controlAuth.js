@@ -1,5 +1,9 @@
+const encription = require("../generator/encript");
 const stringRandom = require("../generator/stringGenerate");
 
+const { hashPassword, comparePassword } = require("../generator/hashing");
+
+const { createUser } = require("../model/auth");
 const login = (req, res) => {
     const role = req.query.role;
     res.render("pages/login", {
@@ -19,21 +23,38 @@ const register = (req, res) => {
     });
 };
 
-const createRegister = (req, res) => {
+const createRegister = async (req, res) => {
     const role = req.query.role;
-    
-    if (req.body.password !== req.body.passwordConfirm) {
+    const data = req.body;
+
+    if (data.password !== data.passwordConfirm) {
         req.flash("msg", "password confirmation does not match");
         res.redirect(`/auth/register?role=${role}`);
-    } else {
-        res.send("password sama");
-
     }
 
+    // encryption password
+    data.password = await hashPassword(data.password);    
+    delete data.passwordConfirm;
+    try {
+        await createUser(data, role);
+        res.redirect(`/auth/register/success?role=${role}`);
+    } catch (error) {
+        req.flash("msg", error.message);
+        res.redirect(`/${stringRandom}`);
+    };
+};
+
+const registerSuccess = (req, res) => {
+    const role = req.query.role;
+    res.render("pages/registerSuccess", {
+        title: "Sign Up",
+        role,
+        layout: "layouts/main"
+    });
 };
 
 const error = (req, res) => {
     res.redirect(`/${stringRandom}`);
 };
 
-module.exports = { login, register, error, createRegister };
+module.exports = { login, register, error, createRegister, registerSuccess };

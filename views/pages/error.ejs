@@ -1,4 +1,10 @@
 <div class="flex justify-center items-center flex-col h-screen">
     <img src="../img/error.png" alt="" class="w-64">
-    <h1 class="text-red-700 font-bold text-xl">This Pages Doesn't Exist</h1>
+    <% if (msg.length > 0) { %>
+    <h1 class="text-red-700 font-bold text-xl max-w-3xl"><%= msg %></h1>
+     
+    <% } else { %>
+    <h1 class="text-red-700 font-bold text-xl max-w-3xl">This page does not exist</h1>
+
+    <% } %>
 </div>

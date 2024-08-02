@@ -25,7 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
-
 app.use(cookieParser("secret"));
 app.use(session({
         cookie: { maxAge: 6000 },
@@ -49,6 +48,7 @@ app.use("/auth", routerAuth);
 app.use("/", (req, res) => {
     res.status(404).render("pages/error", {
         title: "404 NOT FOUND",
+        msg: req.flash("msg"),
         layout: "layouts/main"
     });
 });
@@ -56,6 +56,7 @@ app.use("/", (req, res) => {
 app.use(`/${stringRandom}`, (req, res) => {
     res.status(404).render("pages/error", {
         title: "404 NOT FOUND",
+        msg: req.flash("msg"),
         layout: "layouts/main"
     });
 });
