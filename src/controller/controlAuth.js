@@ -4,6 +4,18 @@ const stringRandom = require("../generator/stringGenerate");
 const { hashPassword, comparePassword } = require("../generator/hashing");
 
 const { createUser } = require("../model/auth");
+
+// validation
+const { validationResult } = require("express-validator");
+
+//flash class
+const FlashClass = (req, inputError, inputA, inputB) => {
+  req.flash(inputError, "input-form-auth-register error-form");
+  req.flash(inputA, "input-form-auth-register");
+  req.flash(inputB, "input-form-auth-register");
+};
+
+// controller
 const login = (req, res) => {
     const role = req.query.role;
     res.render("pages/login", {
@@ -18,7 +30,12 @@ const register = (req, res) => {
         title: "Sign Up",
         greeting: "hello, Fill out this form to join our amazing community!",
         role: req.query.role,
-        msg: req.flash("msg"),
+        error: {
+            msg: req.flash("msg"),
+            classUsername: req.flash("username"),
+            classPassword: req.flash("password"),
+            classEmail: req.flash("email"),
+        },
         layout: "layouts/main"
     });
 };
@@ -27,10 +44,19 @@ const createRegister = async (req, res) => {
     const role = req.query.role;
     const data = req.body;
 
-    if (data.password !== data.passwordConfirm) {
-        req.flash("msg", "password confirmation does not match");
-        res.redirect(`/auth/register?role=${role}`);
-    }
+    // validation
+    const errors = validationResult(req).array();
+    if (errors.length > 0) {
+        req.flash("msg", errors[0].msg);
+        if (errors[0].msg.includes("username")) {
+            FlashClass(req, "username", "password", "email");
+        } else if (errors[0].msg.includes("password")) {
+            FlashClass(req, "password", "username", "email");
+        } else if (errors[0].msg.includes("email")) {
+            FlashClass(req, "email", "password", "username");
+        };
+    res.redirect(`/auth/register?role=${role}`);
+    };
 
     // encryption password
     data.password = await hashPassword(data.password);    

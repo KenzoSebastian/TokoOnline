@@ -5,4 +5,9 @@ const createUser = (data, role) => {
     return pool.execute(query);
 };
 
+const getUser = (email) => {
+    const query = `SELECT * FROM customers WHERE email = "${email}"`;
+    return pool.execute(query);
+};
+
 module.exports = { createUser };
