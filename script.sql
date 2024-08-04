@@ -5,6 +5,7 @@ CREATE TABLE customers (
     username VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
+    urlProfilePicture VARCHAR(100) NOT NULL DEFAULT "../../img/ProfilePicture/blankProfile.png",
     PRIMARY KEY(id)
 ) ENGINE = InnoDB;
 
