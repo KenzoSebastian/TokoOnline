@@ -27,8 +27,6 @@
                         class="block underline text-primary-5 hover:text-primary-7 md:inline">Sign up</a></p>
             </form>
         </div>
-
-
     </div>
 </section>
 <!-- login end -->
@@ -52,5 +50,14 @@
             inputPass.type = "text";
             viewPass.classList.add("viewPassword");
         }
-    })
+    });
+
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+        const timeStamp = Date.now().toString();
+        localStorage.setItem("login", timeStamp);
+    });
+
+    // local store
+    // if (localStorage.getItem("token")) window.location.href = "/";
 </script>

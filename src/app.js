@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+const { getAuthCustomers, getUser } = require("./model/auth");
+
 // router
 const routerAuth = require("./Route/routeAuth");
 
@@ -26,34 +28,52 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 app.use(cookieParser("secret"));
-app.use(session({
-        cookie: { maxAge: 6000 },
-        secret: "secret",
-        resave: true,
-        saveUninitialized: true,
-    }));
+app.use(
+  session({
+    cookie: { maxAge: 6000 },
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 app.use(flash());
 
 //debug
 
-app.get("/", (req, res) => {
-    res.render("pages/dashboard", {
-        title: "beranda",
-        layout: "layouts/main"
-    });
+app.get("/", async (req, res) => {
+    if (!req.cookies.token) {
+        res.redirect("/auth/login?role=customers");
+    } else {
+        const [result] = await getAuthCustomers(req.cookies.token);
+        if (result.length === 0) {
+            res.redirect("/auth/login?role=customers");
+        } else {
+            console.log(result);
+            try {
+                const [data] = await getUser(result[0].id_customers, "customers", "id");
+                console.log(data);
+                res.render("pages/dashboard", {
+                    title: "beranda",
+                    data : data[0],
+                    layout: "layouts/main"
+                });
+            } catch (error) {
+                
+            }
+
+        }
+    }
+    
+});
+
+app.get("/logout", (req, res) => {
+    res.clearCookie("token");
+    res.send("logout!");
 });
 
 app.use("/auth", routerAuth);
 
 app.use("/", (req, res) => {
-    res.status(404).render("pages/error", {
-        title: "404 NOT FOUND",
-        msg: req.flash("msg"),
-        layout: "layouts/main"
-    });
-});
-
-app.use(`/${stringRandom}`, (req, res) => {
     res.status(404).render("pages/error", {
         title: "404 NOT FOUND",
         msg: req.flash("msg"),

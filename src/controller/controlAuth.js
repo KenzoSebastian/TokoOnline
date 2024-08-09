@@ -1,9 +1,9 @@
 const encription = require("../generator/encript");
 const stringRandom = require("../generator/stringGenerate");
 
-const { hashPassword, comparePassword } = require("../generator/hashing");
+const { hashingData, compareDataHashing } = require("../generator/hashing");
 
-const { createUser, getUser } = require("../model/auth");
+const { createUser, getUser, createAuthUser, updateAuthUser } = require("../model/auth");
 
 // validation
 const { validationResult } = require("express-validator");
@@ -48,7 +48,22 @@ const authLogin = async (req, res) => {
 
         res.redirect(`/auth/login?role=${role}`);
     } else {
-        res.redirect("/");
+        // set table auth
+        try {
+            const [result] = await getUser(data.username, role);
+            const arrHashing = Array.from(await hashingData(Date.now().toString()));
+            const filterHashing = arrHashing.filter((item) => item !== "-" && item !== "/" && item !== ".");
+            const token = filterHashing.reverse().join("").substring(0, 15);
+            await updateAuthUser(role, result[0].id, true, token);
+            res.cookie("token", token, {
+              maxAge: 2147483647000,
+              httpOnly: true,
+            });
+            role === "customers" ? res.redirect("/") : res.redirect("/seller");
+        } catch (error) {
+            req.flash("msg", error.message);
+            res.redirect(`/${stringRandom}`);
+        }
     }
 };
 
@@ -86,12 +101,13 @@ const authRegister = async (req, res) => {
         res.redirect(`/auth/register?role=${role}`);
     } else {
         // encryption password
-        data.password = await hashPassword(data.password);    
+        data.password = await hashingData(data.password);    
         delete data.passwordConfirm;
 
         // create user
         try {
-            await createUser(data, role);
+            const [result] = await createUser(data, role);
+            await createAuthUser(role, result.insertId);
             res.redirect(`/auth/register/success?role=${role}`);
         } catch (error) {
             req.flash("msg", error.message);
@@ -111,7 +127,7 @@ const registerSuccess = (req, res) => {
 };
 
 const error = (req, res) => {
-    res.redirect(`/${stringRandom}`);
+    res.redirect(`/${stringRandom("error")}`);
 };
 
 module.exports = { login, register, error, authRegister, authLogin, registerSuccess };

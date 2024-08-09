@@ -1,5 +1,12 @@
 <div class="flex justify-center items-center flex-col">
     <h1 class="text-3xl font-bold">ini adalah halaman dashboard</h1>
     <p>testing photo profile default</p>
-    <img src="../../img/ProfilePicture/blankProfile.png" alt="profile" class="w-24 border-2 border-primary-8 rounded-full">
+    <img src="<%= data.urlProfilePicture %>" alt="profile" class="w-24 border-2 border-primary-8 rounded-full">
+    <ul>
+        <li><%= data.id %></li>
+        <li><%= data.username %></li>
+        <li><%= data.email %></li>
+        <li><%= data.password %></li>
+        <li></li>
+    </ul>
 </div>

@@ -1,6 +1,6 @@
 const { body, check } = require("express-validator");
 const { getUser } = require("../model/auth");
-const { comparePassword } = require("../generator/hashing");
+const { compareDataHashing } = require("../generator/hashing");
 
 const validatorRegister = [
   // username
@@ -37,7 +37,7 @@ const validatorLogin = [
     if (result.length === 0) throw new Error("username not found");
 
     // check password
-    if (!await comparePassword(req.body.password, result[0].password)) throw new Error("password not match");
+    if (!await compareDataHashing(req.body.password, result[0].password)) throw new Error("password not match");
     return true;
   }),
 ];

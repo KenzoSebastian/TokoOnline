@@ -3,12 +3,12 @@ module.exports = {
   content: ["./views/**/*.{html,ejs}"],
   theme: {
     container: {
-      center: true
+      center: true,
     },
     screens: {
-      "sm": "544px",
-      "md": "896px",
-      "lg": "1024px",
+      sm: "544px",
+      md: "896px",
+      lg: "1024px",
     },
     extend: {
       colors: {
@@ -32,9 +32,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        inter: "inter, sans-serif, Arial"
-      }
+        inter: "inter, sans-serif, Arial",
+      },
     },
   },
   plugins: [],
-}
+};
