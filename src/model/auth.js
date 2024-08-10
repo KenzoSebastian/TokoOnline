@@ -25,4 +25,9 @@ const getAuthCustomers = (token) => {
     return pool.execute(query);
 };
 
-module.exports = { createUser, getUser, createAuthUser,updateAuthUser, getAuthCustomers };
+const getAuthSellers = (token) => {
+    const query = `SELECT * FROM auth_sellers WHERE token = "${token}"`;
+    return pool.execute(query);
+};
+
+module.exports = { createUser, getUser, createAuthUser,updateAuthUser, getAuthCustomers, getAuthSellers };

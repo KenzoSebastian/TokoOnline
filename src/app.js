@@ -1,14 +1,12 @@
 const express = require("express");
 const app = express();
 
-const { getAuthCustomers, getUser } = require("./model/auth");
-
 // router
 const routerAuth = require("./Route/routeAuth");
+const routeCustomers = require("./Route/routeCustomers");
+const routeSellers = require("./Route/routeSellers");
 
-// generator string
-const stringRandom = require("./generator/stringGenerate");
-
+// dotenv
 require("dotenv").config();
 const port = process.env.PORT;
 
@@ -40,31 +38,9 @@ app.use(flash());
 
 //debug
 
-app.get("/", async (req, res) => {
-    if (!req.cookies.token) {
-        res.redirect("/auth/login?role=customers");
-    } else {
-        const [result] = await getAuthCustomers(req.cookies.token);
-        if (result.length === 0) {
-            res.redirect("/auth/login?role=customers");
-        } else {
-            console.log(result);
-            try {
-                const [data] = await getUser(result[0].id_customers, "customers", "id");
-                console.log(data);
-                res.render("pages/dashboard", {
-                    title: "beranda",
-                    data : data[0],
-                    layout: "layouts/main"
-                });
-            } catch (error) {
-                
-            }
+app.use("/", routeCustomers);
 
-        }
-    }
-    
-});
+app.use("/sellers", routeSellers);
 
 app.get("/logout", (req, res) => {
     res.clearCookie("token");

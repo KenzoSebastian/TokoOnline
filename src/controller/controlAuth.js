@@ -59,10 +59,10 @@ const authLogin = async (req, res) => {
               maxAge: 2147483647000,
               httpOnly: true,
             });
-            role === "customers" ? res.redirect("/") : res.redirect("/seller");
+            role === "customers" ? res.redirect("/") : res.redirect("/sellers");
         } catch (error) {
             req.flash("msg", error.message);
-            res.redirect(`/${stringRandom}`);
+            res.redirect(`/${stringRandom("error")}`);
         }
     }
 };
@@ -111,7 +111,7 @@ const authRegister = async (req, res) => {
             res.redirect(`/auth/register/success?role=${role}`);
         } catch (error) {
             req.flash("msg", error.message);
-            res.redirect(`/${stringRandom}`);
+            res.redirect(`/${stringRandom("error")}`);
         };
     };
 
