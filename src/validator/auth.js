@@ -42,5 +42,15 @@ const validatorLogin = [
   }),
 ];
 
+const validatorForgot = [
+  check("email", "email is not valid").isEmail(),
+  body("email").custom(async (value, { req }) => {
+    const role = req.query.role;
+    const [result] = await getUser(value, role, "email");
+    if (result.length === 0) throw new Error("email not found");
+    return true;
+  }),
+];
 
-module.exports = { validatorRegister, validatorLogin };
+
+module.exports = { validatorRegister, validatorLogin, validatorForgot };

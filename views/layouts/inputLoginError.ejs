@@ -9,7 +9,7 @@
 <img src="../../img/view.png" alt="visible" class="w-5 absolute bottom-8 right-5 cursor-pointer hover:scale-110 transition sm:bottom-10 md:bottom-12" id="viewPass">
 
 <!-- forgot password -->
-<a href="#" class="absolute text-[10px] right-5 bottom-2 hover:text-primary-5 cursor-pointer sm:text-xs md:text-sm">forgot password?</a>
+<a href="/auth/forgot?role=<%= role %>" class="absolute text-[10px] right-5 bottom-2 hover:text-primary-5 cursor-pointer sm:text-xs md:text-sm">forgot password?</a>
 
 <!-- error message -->
 <p class="absolute text-red-500 text-[10px] left-4 bottom-2.5 sm:text-[11px] md:text-xs md:bottom-4"><%= error.msg[0] %></p>

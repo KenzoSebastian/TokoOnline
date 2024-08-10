@@ -126,8 +126,29 @@ const registerSuccess = (req, res) => {
     });
 };
 
+const forgotPassword = (req, res) => {
+    const role = req.query.role;
+    res.render("pages/forgotPassword", {
+        title: "Forgot Password",
+        role,
+        error: req.flash("error"),
+        layout: "layouts/main"
+    });
+};
+
+const checkEmail = (req, res) => {
+    const role = req.query.role;
+    const errors = validationResult(req).array();
+
+    if (errors.length > 0) {
+        req.flash("error", errors[0].msg);
+        return res.redirect(`/auth/forgot?role=${role}`);
+    };
+    res.send(req.body);
+};
+
 const error = (req, res) => {
     res.redirect(`/${stringRandom("error")}`);
 };
 
-module.exports = { login, register, error, authRegister, authLogin, registerSuccess };
+module.exports = { login, register, error, authRegister, authLogin, registerSuccess, forgotPassword, checkEmail };
