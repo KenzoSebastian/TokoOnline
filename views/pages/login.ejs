@@ -1,5 +1,5 @@
 <!-- login start -->
-<section class="min-h-screen px-12 py-5 flex items-center">
+<section class="min-h-screen px-12 py-5 flex items-center relative">
     <div class="auth-box">
         
         <%- include("../layouts/headerAuth.ejs") %>
@@ -18,7 +18,9 @@
                         <% } else { %>
                             <%- include("../layouts/inputLogin.ejs") %>
                         <% } %>
-
+                        <% if (msgSuccess.length > 0) { %>
+                            <p class="absolute text-primary-4 text-[10px] left-4 bottom-2.5 sm:text-[11px] md:text-xs md:bottom-4"><%= msgSuccess[0] %></p
+                        <% } %>
                     </div>
                 </div>
 

@@ -3,7 +3,7 @@ const stringRandom = require("../generator/stringGenerate");
 
 const { hashingData, compareDataHashing } = require("../generator/hashing");
 
-const { createUser, getUser, createAuthUser, updateAuthUser } = require("../model/auth");
+const { createUser, getUser, createAuthUser, updateAuthUser, updatePasswordUser } = require("../model/auth");
 
 // validation
 const { validationResult } = require("express-validator");
@@ -28,6 +28,7 @@ const login = (req, res) => {
             classUsername: req.flash("username"),
             classPassword: req.flash("password"),
         },
+        msgSuccess: req.flash("msgSuccess"),
         layout: "layouts/main"
     });
 };
@@ -136,7 +137,7 @@ const forgotPassword = (req, res) => {
     });
 };
 
-const checkEmail = (req, res) => {
+const checkEmail = async (req, res) => {
     const role = req.query.role;
     const errors = validationResult(req).array();
 
@@ -144,11 +145,53 @@ const checkEmail = (req, res) => {
         req.flash("error", errors[0].msg);
         return res.redirect(`/auth/forgot?role=${role}`);
     };
-    res.send(req.body);
+    const email = req.body.email;
+    res.redirect(`/auth/forgot/changePassword?email=${email}&role=${role}`);
+};
+
+const inputNewPassword = async (req, res) => {
+    const role = req.query.role;
+    const email = req.query.email;
+    try {
+        const [result] = await getUser(email, role, "email");
+        res.render("pages/inputNewPassword", {
+            title: "Input New Password",
+            data: result[0],
+            error: req.flash("error"),
+            role,
+            layout: "layouts/main"
+        });
+    } catch (error) {
+        req.flash("msg", error.message);
+        res.redirect(`/${stringRandom("error")}`);
+    }
+};
+
+const changePassword = async (req, res) => {
+    const role = req.query.role;
+    const email = req.query.email;
+    const data = req.body;
+    const errors = validationResult(req).array();
+    if (errors.length > 0) {
+        req.flash("error", errors[0].msg);
+        return res.redirect(`/auth/forgot/changePassword?email=${email}&role=${role}`);
+    };
+    console.log(data);
+    // encryption password
+    data.newPassword = await hashingData(data.newPassword);
+    try {
+        await updatePasswordUser(role, data.newPassword, data.id);
+        req.flash("msgSuccess", "Password has been changed");
+        res.redirect(`/auth/login?role=${role}`);
+    } catch (error) {
+        req.flash("msg", error.message);
+        res.redirect(`/${stringRandom("error")}`);
+    };
+
 };
 
 const error = (req, res) => {
     res.redirect(`/${stringRandom("error")}`);
 };
 
-module.exports = { login, register, error, authRegister, authLogin, registerSuccess, forgotPassword, checkEmail };
+module.exports = { login, register, error, authRegister, authLogin, registerSuccess, forgotPassword, checkEmail, inputNewPassword, changePassword };

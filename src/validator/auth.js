@@ -52,5 +52,15 @@ const validatorForgot = [
   }),
 ];
 
+const validatorChangePassword = [
+  body("newPassword").custom(async (value, { req }) => {
+    if (value !== req.body.confirmPassword) throw new Error("password confirmation does not match");
 
-module.exports = { validatorRegister, validatorLogin, validatorForgot };
+    if (await compareDataHashing(value, req.body.oldPassword)) throw new Error("new password cannot be the same as old password");
+    return true;
+  }),
+  check("newPassword", "password must be at least 5 characters").isLength({ min: 5 }),
+];
+
+
+module.exports = { validatorRegister, validatorLogin, validatorForgot, validatorChangePassword };

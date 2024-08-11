@@ -5,6 +5,11 @@ const createUser = (data, role) => {
     return pool.execute(query);
 };
 
+const updatePasswordUser = ( role, password, id) => {
+    const query = `UPDATE ${role} SET password = "${password}" WHERE id = ${id}`;
+    return pool.execute(query);
+};
+
 const createAuthUser = (role, idUser) => {
     const query = `INSERT INTO auth_${role} (id_${role}) VALUES (${idUser})`;
     return pool.execute(query);
@@ -30,4 +35,4 @@ const getAuthSellers = (token) => {
     return pool.execute(query);
 };
 
-module.exports = { createUser, getUser, createAuthUser,updateAuthUser, getAuthCustomers, getAuthSellers };
+module.exports = { createUser, updatePasswordUser, getUser, createAuthUser,updateAuthUser, getAuthCustomers, getAuthSellers };
