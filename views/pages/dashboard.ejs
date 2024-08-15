@@ -1,11 +1,91 @@
-<div class="flex justify-center items-center flex-col">
-    <h1 class="text-3xl font-bold">ini adalah halaman dashboard</h1>
-    <p>testing photo profile default</p>
-    <img src="<%= data.urlProfilePicture %>" alt="profile" class="w-24 border-2 border-primary-8 rounded-full">
-    <ul>
-        <li><%= data.id %></li>
-        <li><%= data.username %></li>
-        <li><%= data.email %></li>
-        <li><%= data.password %></li>
-    </ul>
+<!-- navigation -->
+<%- include('../layouts/dashboardLayouts/nav.ejs') %>
+
+<!-- hero section -->
+<div class="container">
+    <div class="h-screen sm:h-auto w-full flex flex-col justify-start gap-16 items-center sm:gap-20 md:justify-center md:flex-row my-16 sm:my-20 md:my-[105px] md:gap-5">
+        <div class="flex flex-col justify-end text-center mx-8 md:w-4/5 md:h-auto md:justify-center md:mx-0 md:ml-1 gap-3 sm:gap-5 md:gap-2">
+            <h1 class="font-bold text-base mb-3 text-pretty md:text-end font-poppins sm:text-xl md:text-2xl lg:text-3xl">Discover the <span class="highlight">products</span> you adore and complete your purchase <span class="highlight">effortlessly</span> within seconds.</h1>
+            <p class="text-[11px] md:text-end sm:text-sm md:text-base lg:text-lg">Explore handpicked items with exclusive discounts just for you. Enjoy a quick, easy shopping experience and fast delivery right to your door.</p>
+            <a href="#productsContainer" class="btn-primary mt-3 md:mx-0 sm:w-32 md:w-44 md:py-4 sm:text-center sm:self-end">Get Started</a>
+        </div>
+        <div class="w-4/5 md:w-auto">
+            <img src="../img/dashboard/hero.png" alt="hero" class="w-full">
+        </div>
+    </div>
 </div>
+
+<!-- divider -->
+<div class="container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#f1f5f9" fill-opacity="1" d="M0,64L60,90.7C120,117,240,171,360,176C480,181,600,139,720,106.7C840,75,960,53,1080,64C1200,75,1320,117,1380,138.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+</div>
+
+<!-- products -->
+<div class="container px-5 py-20 sm:px-6 md:px-10 sm:py-24 md:py-28 bg-slate-100" id="productsContainer">
+    <div>
+        <h1 class="uppercase font-bold text-base sm:text-xl md:text-2xl lg:text-3xl">Products you love </h1>
+        <form action="#" class="flex md:w-3/4 mt-4 mb-11 md:mt-5 md:mb-16">
+            <input type="text" class="w-full block border border-primary-3 h-5 px-3 py-3.5 rounded-s-md text-xs outline-none focus:ring-1 focus:ring-primary-3 sm:text-base sm:py-5 md:text-lg" placeholder="Search for products">
+
+            <button type="submit" class="w-[30px] h-[30px] p-1 sm:w-[42px] sm:h-[42px] sm:p-1.5 md:p-2 bg-primary-3 rounded-e-md"><img src="../img/dashboard/search.png" alt="search" class="w-full hover:scale-105 transition duration-300 md:hover:scale-110"></button>
+        </form>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4" id="products">
+            <!-- card start -->
+            <!-- card end -->
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // api calling
+    const products = document.getElementById("products");
+
+    const card = (image, title, description, price, link) => {
+        const element = `
+        <a href="/products/${link}" class="card-product">
+            <img src="${image}" alt="product" class="w-full max-h-[150px] md:max-h-[200px] lg:max-h-[250px] object-cover">
+            <div class="px-2 flex flex-col justify-start h-full pb-2">
+                <h1 class="font-black uppercase text-xs md:text-base">${title}</h1>
+                <p class="text-[10px] md:text-sm">${description}</p>
+                <div class="mt-2 flex items-end h-full">
+                    <div class="flex justify-between items-center w-full">
+                        <p class="font-bold text-[11px] md:text-[15px]">Rp. ${price}</p>
+                        <div class="flex justify-end gap-2">
+                            <form action="#" id="love">
+                                <input type="hidden" value="id_product">
+                                <button type="submit" class="btn-card"><img src="../img/dashboard/emptyLove.png" alt="love"></button>
+                            </form>
+                            <form action="#" id="bag">
+                                <input type="hidden" value="id_product">
+                                <button type="submit" class="btn-card"><img src="../img/dashboard/addBag.png" alt="addBag"></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        `;
+        return element;
+    };
+
+    const callApi = async () => {
+        try {
+            const { data } = await axios.get('https://dummyjson.com/products');
+            console.log(data);
+            
+            data.products.forEach(product => {
+                const price = (product.price * 1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+                if (product.description.length > 130) {
+                    product.description = `${product.description.substring(0, 130)} <span class="text-[10px] md:text-sm font-bold">...read more</span>`;
+                };
+                products.innerHTML += card(product.images[0], product.title, product.description, price, product.id);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        
+    };
+    callApi();
+</script>

@@ -1,4 +1,5 @@
 const { getAuthCustomers, getUser } = require("../model/auth");
+const stringRandom = require("../generator/stringGenerate");
 
 const getCustomers = async (req, res) => {
     // cookie token
@@ -18,7 +19,7 @@ const getCustomers = async (req, res) => {
         });
     } catch (error) {
         req.flash("msg", error.message);
-        return res.redirect(`/${stringRandom("error")}`);
+        res.redirect(`/${stringRandom("error")}`);
         };
 };
 

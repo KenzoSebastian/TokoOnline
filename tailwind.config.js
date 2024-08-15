@@ -30,9 +30,12 @@ module.exports = {
           15: "#80FF80",
           16: "#99FF99",
         },
+        secondary: "#e2ffe1",
       },
       fontFamily: {
         inter: "inter, sans-serif, Arial",
+        shantell: "shantell sans, sans-serif, Arial",
+        poppins: "poppins, sans-serif, Arial",
       },
     },
   },

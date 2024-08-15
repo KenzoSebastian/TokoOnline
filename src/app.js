@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
+const { updateAuthUser } = require("./model/auth");
 app.use(cookieParser("secret"));
 app.use(
   session({
@@ -42,9 +43,12 @@ app.use("/", routeCustomers);
 
 app.use("/sellers", routeSellers);
 
-app.get("/logout", (req, res) => {
-    res.clearCookie("token");
-    res.send("logout!");
+app.get("/logout", async (req, res) => {
+  // const role = req.query.role;
+  // const userId = req.query.id;
+  // await updateAuthUser(role, userId, false, "no token" );
+  res.clearCookie("token");
+  res.send("logout!");
 });
 
 app.use("/auth", routerAuth);

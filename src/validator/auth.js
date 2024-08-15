@@ -4,18 +4,15 @@ const { compareDataHashing } = require("../generator/hashing");
 
 const validatorRegister = [
   // username
-  body("username").custom((value) => {
-    if (value.includes(" ")) throw new Error("username cannot contain spaces");
-    return true;
-  }),
-  check("username", "username must be at least 5 characters").isLength({ min: 5 }),
   body("username").custom(async (value, { req }) => {
+    if (value.includes(" ")) throw new Error("username cannot contain spaces");
+    
     const role = req.query.role;
     const [result] = await getUser(value, role);
     if (result.length > 0) throw new Error("username already exists");
     return true;
   }),
-
+  check("username", "username must be at least 5 characters").isLength({ min: 5 }),
   // email
     check("email", "email is not valid").isEmail(),
 

@@ -2,7 +2,7 @@
 <section class="min-h-screen px-12 py-5 flex items-center">
     <div class="auth-box">
 
-        <%- include("../layouts/headerAuth.ejs") %>
+        <%- include("../layouts/authLayouts/headerAuth.ejs") %>
         
         <div class="w-full md:w-1/2 md:order-first">
             <form action="/auth/register?role=<%= role %>" method="post">
@@ -15,15 +15,15 @@
                     <div class="relative py-3 px-3 md:py-5">
 
                         <% if (error.msg.length > 0)  { %>
-                            <%- include("../layouts/inputRegisterError.ejs") %>
+                            <%- include("../layouts/authLayouts/inputRegisterError.ejs") %>
                         <% } else { %>
-                            <%- include("../layouts/inputRegister.ejs") %>
+                            <%- include("../layouts/authLayouts/inputRegister.ejs") %>
                         <% } %>
 
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">register</button>
+                <button type="submit" class="btn-primary mb-5">register</button>
                 <p class="text-center text-xs sm:text-sm md:text-base">have an account? <a href="/auth/login?role=customers" class="block underline text-primary-5 hover:text-primary-7 md:inline">Sign in</a></p>
             </form>
         </div>
