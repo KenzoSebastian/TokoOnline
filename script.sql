@@ -56,3 +56,15 @@ SELECT sellers.username, auth_sellers.status, auth_sellers.token FROM sellers JO
 
 -- update ketika login
 UPDATE auth_customers SET status = FALSE, token = "token baru" WHERE id_customers = 1;
+
+
+-- table cart
+CREATE TABLE cart (
+    id INT NOT NULL AUTO_INCREMENT,
+    id_customers INT NOT NULL,
+    id_products INT NOT NULL,
+    quantity INT NOT NULL,
+    total_price INT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY fk_id_customers_cart (id_customers) REFERENCES customers(id)
+) ENGINE = InnoDB;

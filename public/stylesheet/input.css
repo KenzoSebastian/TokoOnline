@@ -3,9 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    font-family: "inter";
-  }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        font-family: "inter";
+    }
 }
 
 @layer components {

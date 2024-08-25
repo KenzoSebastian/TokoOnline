@@ -20,11 +20,6 @@ const updateAuthUser = (role, idUser, value, token) => {
     return pool.execute(query);
 };
 
-const getUser = (value, role, key = "username") => {
-    const query = `SELECT * FROM ${role} WHERE ${key} = "${value}"`;
-    return pool.execute(query);
-};
-
 const getAuthCustomers = (token) => {
     const query = `SELECT * FROM auth_customers WHERE token = "${token}"`;
     return pool.execute(query);
@@ -35,4 +30,9 @@ const getAuthSellers = (token) => {
     return pool.execute(query);
 };
 
-module.exports = { createUser, updatePasswordUser, getUser, createAuthUser,updateAuthUser, getAuthCustomers, getAuthSellers };
+const getUser = (value, role, key = "username") => {
+  const query = `SELECT * FROM ${role} WHERE ${key} = "${value}"`;
+  return pool.execute(query);
+};
+
+module.exports = { createUser, updatePasswordUser, createAuthUser,updateAuthUser, getAuthCustomers, getAuthSellers, getUser };
