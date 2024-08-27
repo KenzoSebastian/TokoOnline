@@ -1,6 +1,6 @@
 <% data.products.forEach(product => { %>
     
-    <%product.price = (product.price * 1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });%>
+    <%const price = (product.price * 1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });%>
 
     <a href="/products/<%= product.id %>" class="card-product">
         <img src="<%= product.images[0] %>" alt="product" class="w-full max-h-[150px] md:max-h-[200px] lg:max-h-[250px] object-cover">
@@ -13,23 +13,19 @@
                 <p class="text-[10px] md:text-sm"><%= product.description %></p>
             <% } %>
 
-            <div class="mt-2 flex items-end h-full">
-                <div class="flex justify-between items-center w-full">
-                    <p class="font-bold text-[11px] md:text-[15px]"><%= product.price %></p>
-                    
-                    <div class="flex justify-end gap-2">
-                        <form action="#" id="love">
-                            <input type="hidden" value="id_product">
-                            <button type="submit" class="btn-card"><img src="../img/dashboard/emptyLove.png" alt="love"></button>
-                        </form>
-                        <form action="#" id="bag">
-                            <input type="hidden" value="id_product">
-                            <button type="submit" class="btn-card"><img src="../img/dashboard/addBag.png" alt="addBag"></button>
-                        </form>
-                    </div>
+            <% 
+            const discounts = Math.ceil(product.discountPercentage);
+            const discountsPrice = Math.ceil(product.price) + (Math.ceil(product.price) * (discounts / 100));
+            const priceBefore = (discountsPrice * 1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+            %>
+
+            <div class="mt-3 flex flex-col justify-end h-full">
+                <div class="flex items-center gap-1">
+                    <p class=" text-[9px] md:text-[12px] font-light line-through italic text-red-500"><%= priceBefore %></p>
+                    <p class="font-bold text-[9px] md:text-[12px] italic text-red-500"><%= discounts %>% Off</p>
                 </div>
+                <p class="font-bold text-[11px] md:text-[15px] text-primary-7"><%= price %></p>
             </div>
         </div>
     </a>
-
 <% }) %>

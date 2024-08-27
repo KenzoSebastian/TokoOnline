@@ -1,5 +1,5 @@
 const { getAuthCustomers, getUser } = require("../model/auth");
-const { getCartUser, getAllProducts } = require("../model/customers");
+const { getCartUser, getAllProducts, insertWishlist } = require("../model/customers");
 
 const stringRandom = require("../generator/stringGenerate");
 const { arrayModifier } = require("../generator/arrayModifier");
@@ -18,7 +18,7 @@ const getCustomers = async (req, res) => {
     // table cart
     const [cart] = await getCartUser(result[0].id_customers);
 
-    // 
+    // get all products
     const allProducts = await getAllProducts();
 
     const products = arrayModifier(allProducts, 36);
@@ -30,7 +30,19 @@ const getCustomers = async (req, res) => {
   } catch (error) {
     req.flash("msg", error.message);
     res.redirect(`/${stringRandom("error")}`);
-  }
+  };
 };
 
-module.exports = { getCustomers };
+
+// belum digunakan
+const insertFavorite = (req, res) => {
+  const body = req.body;
+  console.log(body);
+  res.render("pages/addFavorite", {
+    title: "add favorite",
+    listProducts: body.listProducts,
+    layout: "layouts/main",
+  });
+};
+
+module.exports = { getCustomers, insertFavorite };

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { getCustomers } = require("../controller/controlCustomers");
+const { getCustomers, insertFavorite } = require("../controller/controlCustomers");
 
 router.get("/", getCustomers);
+router.post("/addToFavorite", insertFavorite);
 
 module.exports = router;

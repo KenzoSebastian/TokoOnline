@@ -1291,6 +1291,14 @@ body {
   margin-top: 1rem;
 }
 
+.mt-11 {
+  margin-top: 2.75rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
 .block {
   display: block;
 }
@@ -1452,6 +1460,10 @@ body {
 
 .gap-3 {
   gap: 0.75rem;
+}
+
+.gap-1 {
+  gap: 0.25rem;
 }
 
 .gap-x-2 {
@@ -1635,6 +1647,10 @@ body {
   line-height: 1rem;
 }
 
+.text-\[9px\] {
+  font-size: 9px;
+}
+
 .font-black {
   font-weight: 900;
 }
@@ -1647,12 +1663,20 @@ body {
   font-weight: 300;
 }
 
+.font-medium {
+  font-weight: 500;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
 
 .capitalize {
   text-transform: capitalize;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .text-green-700 {
@@ -1695,8 +1719,17 @@ body {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-primary-7 {
+  --tw-text-opacity: 1;
+  color: rgb(0 102 0 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
+}
+
+.line-through {
+  text-decoration-line: line-through;
 }
 
 .outline-none {
@@ -2063,6 +2096,10 @@ body {
     margin-top: 1.25rem;
   }
 
+  .md\:mt-16 {
+    margin-top: 4rem;
+  }
+
   .md\:inline {
     display: inline;
   }
@@ -2229,6 +2266,10 @@ body {
   .md\:text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
+  }
+
+  .md\:text-\[12px\] {
+    font-size: 12px;
   }
 
   .md\:hover\:scale-110:hover {

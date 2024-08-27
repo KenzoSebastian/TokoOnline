@@ -24,12 +24,12 @@
 <div class="container px-5 py-20 sm:px-6 md:px-10 sm:py-24 md:py-28 bg-slate-100" id="productsContainer">
     <div>
         <h1 class="uppercase font-bold text-base sm:text-xl md:text-2xl lg:text-3xl">Products you love </h1>
-        <form action="#" class="flex md:w-3/4 mt-4 mb-11 md:mt-5 md:mb-16">
+        <form action="#" class="flex md:w-3/4 mt-4 md:mt-5" id="formSearch">
             <input type="text" class="w-full block border border-primary-3 h-5 px-3 py-3.5 rounded-s-md text-xs outline-none focus:ring-1 focus:ring-primary-3 sm:text-base sm:py-5 md:text-lg" placeholder="Search for products">
 
             <button type="submit" class="w-[30px] h-[30px] p-1 sm:w-[42px] sm:h-[42px] sm:p-1.5 md:p-2 bg-primary-3 rounded-e-md"><img src="../img/dashboard/search.png" alt="search" class="w-full hover:scale-105 transition duration-300 md:hover:scale-110"></button>
         </form>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+        <div class="grid grid-cols-2 mt-11 md:mt-16 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4" id="products">
             <!-- card start -->
             <%- include("../layouts/dashboardLayouts/card.ejs") %>
             <!-- card end -->
@@ -40,5 +40,63 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    const card = (image, title, description, price, priceBefore, discountPercentage, id) => {
+        const element = `
+        <a href="/products/${id}" class="card-product">
+            <img src="${image}" alt="product" class="w-full max-h-[150px] md:max-h-[200px] lg:max-h-[250px] object-cover">
+            <div class="px-2 flex flex-col justify-start h-full pb-2">
+                <h1 class="font-black uppercase text-xs md:text-base">${title}</h1>
+                <p class="text-[10px] md:text-sm">${description}</p>
+                <div class="mt-3 flex flex-col justify-end h-full">
+                    <div class="flex items-center gap-1">
+                        <p class="text-[9px] md:text-[12px] font-light line-through italic text-red-500">${priceBefore}</p>
+                        <p class="font-bold text-[9px] md:text-[12px] italic text-red-500">${discountPercentage}% Off</p>
+                    </div>
+                        <p class="font-bold text-[11px] md:text-[15px] text-primary-7">${price}</p>
+                </div>
+            </div>
+        </a>
+        `;
+        return element;
+    };
+
+    const formSearch = document.getElementById("formSearch");
+    const buttonSearch = formSearch.querySelector("button");
+    const inputSearch = formSearch.querySelector("input");
+
+    const cardProducts = document.getElementById("products");
+
+    
+    formSearch.addEventListener("submit", async search => {
+        search.preventDefault();
+        formSearch.nextElementSibling.tagName.toLowerCase() === "h2" && formSearch.nextElementSibling.remove();
+
+        cardProducts.innerHTML = "";
+
+        try {
+            const data = await axios.get(`https://dummyjson.com/products/search?q=${inputSearch.value}`);
+            const products = data.data.products;
+                products.forEach((product, i) => {
+                    const price = (product.price * 1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+                    const discounts = Math.ceil(product.discountPercentage);
+                    const discountsPrice = Math.ceil(product.price) + (Math.ceil(product.price) * (discounts / 100));
+                    const priceBefore = (discountsPrice * 1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+
+                    if (product.description.length > 130) {
+                        product.description = `${product.description.substring(0, 130)} <span class="text-[10px] md:text-sm font-bold">...read more</span>`;
+                    };
+                    
+                    cardProducts.innerHTML += card(product.images[0], product.title, product.description, price, priceBefore, discounts, product.id);
+                });
+            
+                const h2 = document.createElement("h2");
+                h2.classList.add("uppercase", "font-medium", "mt-5", "text-sm", "sm:text-base", "md:text-xl",);
+        
+                products.length === 0 ? h2.textContent = `There are no result for ${inputSearch.value}` : h2.textContent = `Search for ${inputSearch.value}`;
+            inputSearch.value !== "" && formSearch.after(h2);
+        } catch (error) {
+            console.log(error);
+        }
+    });
 
 </script>

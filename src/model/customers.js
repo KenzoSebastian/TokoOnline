@@ -25,4 +25,9 @@ const getAllProducts = async () => {
   return arrayProducts;
 };
 
-module.exports = { getCartUser, getAllProducts };
+const insertWishlist = async idProduct => {
+  const query = `INSERT INTO wishlist(id_customers, id_products) VALUE(${idProduct}, ${idProduct})`;
+  return pool.execute(query);
+};
+
+module.exports = { getCartUser, getAllProducts, insertWishlist };
